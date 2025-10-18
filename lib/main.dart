@@ -120,7 +120,27 @@ class ListViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-
+      children: [
+        ElevatedButton.icon(
+          onPressed: onAdd,
+          icon: const Icon(Icons.add),
+          label: const Text('Добавить книгу'),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: books.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(books[index]),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => onRemove(index),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
