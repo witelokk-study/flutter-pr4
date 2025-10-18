@@ -42,7 +42,7 @@ class _BookAppState extends State<BookApp> {
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Books Demo')),
+        appBar: AppBar(title: const Text('Books')),
         body: screens[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
