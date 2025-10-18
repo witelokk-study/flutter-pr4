@@ -37,11 +37,12 @@ class _BookAppState extends State<BookApp> {
     final screens = [
       ColumnScreen(books: _books, onAdd: _addBook, onRemove: _removeBook),
       ListViewScreen(books: _books, onAdd: _addBook, onRemove: _removeBook),
+      SeparatedScreen(books: _books, onAdd: _addBook, onRemove: _removeBook),
     ];
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Books')),
+        appBar: AppBar(title: const Text('Books Demo')),
         body: screens[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
@@ -54,6 +55,10 @@ class _BookAppState extends State<BookApp> {
             BottomNavigationBarItem(
               icon: Icon(Icons.list),
               label: 'ListView',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.view_list),
+              label: 'Separated',
             ),
           ],
         ),
@@ -138,6 +143,47 @@ class ListViewScreen extends StatelessWidget {
                 ),
               );
             },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class SeparatedScreen extends StatelessWidget {
+  final List<String> books;
+  final VoidCallback onAdd;
+  final Function(int) onRemove;
+
+  const SeparatedScreen({
+    super.key,
+    required this.books,
+    required this.onAdd,
+    required this.onRemove,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ElevatedButton.icon(
+          onPressed: onAdd,
+          icon: const Icon(Icons.add),
+          label: const Text('Добавить книгу'),
+        ),
+        Expanded(
+          child: ListView.separated(
+            itemCount: books.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(books[index]),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => onRemove(index),
+                ),
+              );
+            },
+            separatorBuilder: (context, index) => const Divider(),
           ),
         ),
       ],
