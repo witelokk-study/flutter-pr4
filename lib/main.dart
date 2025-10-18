@@ -12,6 +12,8 @@ class BookApp extends StatefulWidget {
 }
 
 class _BookAppState extends State<BookApp> {
+  int _currentIndex = 0;
+
   final List<String> _books = [
     "1984 — Джордж Оруэлл",
     "Мастер и Маргарита — Михаил Булгаков",
@@ -32,13 +34,28 @@ class _BookAppState extends State<BookApp> {
 
   @override
   Widget build(BuildContext context) {
+    final screens = [
+      ColumnScreen(books: _books, onAdd: _addBook, onRemove: _removeBook),
+      ListViewScreen(books: _books, onAdd: _addBook, onRemove: _removeBook),
+    ];
+
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Column')),
-        body: ColumnScreen(
-          books: _books,
-          onAdd: _addBook,
-          onRemove: _removeBook,
+        appBar: AppBar(title: const Text('Books')),
+        body: screens[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (i) => setState(() => _currentIndex = i),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.view_column),
+              label: 'Column',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: 'ListView',
+            ),
+          ],
         ),
       ),
     );
@@ -84,6 +101,26 @@ class ColumnScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class ListViewScreen extends StatelessWidget {
+  final List<String> books;
+  final VoidCallback onAdd;
+  final Function(int) onRemove;
+
+  const ListViewScreen({
+    super.key,
+    required this.books,
+    required this.onAdd,
+    required this.onRemove,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+
     );
   }
 }
